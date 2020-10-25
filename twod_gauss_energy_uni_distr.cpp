@@ -22,7 +22,7 @@
 #include <TF2.h>
 #include <vector>
 
-//git version
+//git version 2
 
 Double_t g2(Double_t *x, Double_t *par)
 {
