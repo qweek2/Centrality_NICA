@@ -22,6 +22,8 @@
 #include <TF2.h>
 #include <vector>
 
+//git version
+
 Double_t g2(Double_t *x, Double_t *par)
 {
     Double_t r1 = Double_t((x[0] - par[1]) / par[2]);
