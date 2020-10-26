@@ -1,7 +1,7 @@
 # Centrality_NICA
 NICA
 
-1. FitData is for Fitting. Set path to the hist you want to fit with ellipse.
+1. FitIt is for Fitting. Set path to the hist you want to fit with ellipse.
 
 Example:
         
