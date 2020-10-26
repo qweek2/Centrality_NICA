@@ -311,9 +311,9 @@ void Ellipse(int run, TGraph *g = ((TGraph *)0))
     cout << "top x " << top_x << endl;
     cout << "top y " << top_y << endl;
     cout << "theta deg " << xm[4] * 3.1415 / 180 << endl;
-    gSystem->cd("/mnt/d/Work/INR/nkarpushkin-centrality/pics");
+    gSystem->cd("/mnt/d/Work/INR/centrality/pics");
     gSystem->Exec("mkdir fits_ell");
-    gSystem->cd("/mnt/d/Work/INR/nkarpushkin-centrality/pics/fits_ell");
+    gSystem->cd("/mnt/d/Work/INR/centrality/pics/fits_ell");
 
     c->SaveAs(Form("%i_run Ellipse Fit .png", run));
   }
