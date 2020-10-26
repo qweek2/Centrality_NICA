@@ -39,10 +39,6 @@ Double_t fun2(Double_t *x, Double_t *par) //for signal
 //alternative
 Double_t fun4(Double_t *x, Double_t *par) //for pions 2
 {
-    //0.000142143 (result in radians) // 0.008144°
-    //double phi = 0.000142143;
-    //t = cos(phi)/sin(phi);
-    //f->FixParameter(1, 2.); // to try
     Double_t z2 = (x[0] * x[0] * par[0] * par[0]) / (par[1] * par[1]) + (x[1] * x[1] * par[0] * par[0]) / (par[1] * par[1]);
     z2 *= par[1] * par[1];
     return -sqrt(z2) + par[2];
@@ -65,11 +61,8 @@ void twod_gauss_energy()
     Double_t edepMod_1_p[91], edepMod_2_p[91], edepMod_3_p[91], edepMod_4_p[91], edepMod_5_p[91], edepMod_6_p[91], edepMod_7_p[91];
     Double_t impPar, impPar_p;
 
-    //TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/analzdc_full_geom_QGSM_AuAu_11_mb_500_99500ev.root");
-    //TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/analzdc_full_geom_SMM_AuAu_MB_s5GeV_1_2_98977ev.root");
-    //TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/analzdc_full_geom_QGSM_AuAuss5mb_99500ev.root");
     TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/analzdc_full_geom_SMM_AuAu_MB_s11GeV_1_2_3_4_5_99483ev.root");
-    //analzdc_full_geom_SMM_AuAu_MB_s11GeV_1_2_3_4_5_99483ev.root
+
     TTree *nt1 = (TTree *)_file0->Get("nt1");
     nt1->SetBranchAddress("edepMod_1", &edepMod_1);
     nt1->SetBranchAddress("edepMod_2", &edepMod_2);
@@ -227,7 +220,7 @@ void twod_gauss_energy()
     /////////////  data  //////////////
     ///////////////////////////////////
     ///////////////////////////////////
-    for (Int_t entry = 0; entry < 50000; entry++) //nt1->GetEntries() // 5 vs 8 1700 bad
+    for (Int_t entry = 0; entry < 50000; entry++) //nt1->GetEntries()
     {
         th2_hist_ptr->Reset();
         th2_hist_ptr = ((TH2 *)(gDirectory->FindObjectAny("PSD_energy_surface")));
@@ -356,18 +349,6 @@ void twod_gauss_energy()
             ////////////////////////////
         }
 
-        /*double E_sum = hDiff->Integral();
-		for (Int_t module_iter = 0; module_iter < 90; module_iter++) //NICA 45+45 mods (VETO1 - 1-45 (from 0 to 44), VETO 2 -46-89 (from 45 to 89))
-		{
-			if (module_iter == 22 || module_iter == 67)
-				continue;
-			Float_t Xposition = xxxxNICA[module_iter];
-			Float_t Yposition = yyyyNICA[module_iter];
-			Double_t Energy = edepMod_7[module_iter + 1];
-			// hist with normalized data
-			hDiff->Fill(Xposition, Yposition, 100 * Energy/E_sum);
-		}*/
-
         th1_hist_ptr = ((TH1 *)(gDirectory->FindObjectAny("PSD_energy_in_ring")));
         th1_hist_ptr->Reset();
         for (int i = 0; i < en_rings_nmbr; i++)
@@ -392,18 +373,12 @@ void twod_gauss_energy()
             else
                 hPionsFit->SetBinError(iBin, numeric_limits<double>::max());
         }
-        /*cout << "" << endl;
-		cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-		cout << "!!!!!!!!!!!!!!!!!!!!!!!!!! next fit  !!!!!!!!!!!!!!!!!!!!!!!" << endl;
-		cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-		cout << "" << endl;*/
+
         Double_t f6params[npar3] = {35, 1000, 1000};
         f6->SetParameters(f6params);
         hEnergy->Fit("f6", "QR M"); //VR - more words
-        //cout << f6->Eval(0, 0) << endl;
 
         hFin->Reset();
-        //double Ecalc = 0; // = hFin->Integral();
         for (int i = 1; i < hFin->GetXaxis()->GetNbins() + 1; i++)
         {
             for (int j = 1; j < hFin->GetYaxis()->GetNbins() + 1; j++)
@@ -413,7 +388,7 @@ void twod_gauss_energy()
                 double x = hFin->GetXaxis()->GetBinCenter(i);
                 double y = hFin->GetYaxis()->GetBinCenter(j);
                 double z = f6->Eval(x, y);
-                if (z < 0) // ??? due to conic equation or fit
+                if (z < 0) // due to conic equation or fit
                     z = 0;
                 //Ecalc += z;
                 hFin->Fill(x, y, z);
@@ -432,11 +407,6 @@ void twod_gauss_energy()
         f7->SetParameters(f7params);
         hFin->Fit("f7", "QR M");
         hPionsFit->Reset();
-        //pions from fit
-        /*double pion_energy = f6->Eval(xxxxNICA[0], yyyyNICA[0]) / 4;
-		pion_energy += f6->Eval(xxxxNICA[4], yyyyNICA[4]) / 4;
-		pion_energy += f6->Eval(xxxxNICA[40], yyyyNICA[40]) / 4;
-		pion_energy += f6->Eval(xxxxNICA[44], yyyyNICA[44]) / 4;*/
 
         //pions from hist
         double pion_energy = 0;
@@ -448,12 +418,11 @@ void twod_gauss_energy()
         pion_energy += hEnergy->GetBinContent(7, 6) / 8;
         pion_energy += hEnergy->GetBinContent(2, 7) / 8;
         pion_energy += hEnergy->GetBinContent(6, 7) / 8;
-        //myfile << -1.5 * pion_energy / (sqrt(xxxxNICA[15] * xxxxNICA[15] + yyyyNICA[15] * yyyyNICA[15]) - sqrt(xxxxNICA[0] * xxxxNICA[0] + yyyyNICA[0] * yyyyNICA[0])) << endl;
+
         for (Int_t module_iter = 0; module_iter < 45; module_iter++)
         {
             if (module_iter == 22 || module_iter == 67)
                 continue;
-            //myfile << entry << " " <<  f7->Eval(xxxxNICA[0], yyyyNICA[0]) << endl;
             if (pion_energy >= 0)
             {
                 if ((module_iter == 15 || module_iter == 23 || module_iter == 21 || module_iter == 29))                                                                                                                                                                                                                                                                                                                     //1
@@ -483,13 +452,6 @@ void twod_gauss_energy()
             }
         }
 
-        /*if (atan(f7->GetParameter(2) / f7->GetParameter(0)) * 180 / 3.1415 > 0)
-		{
-			//myfile << atan(f7->GetParameter(2) / f7->GetParameter(0)) * 180 / 3.1415 << " " << f7->GetParameter(2) << endl;
-			g->SetMarkerColor(1);
-			g->SetPoint(g->GetN(), , edep_7sect_1 + edep_7sect_2);
-		}*/
-
         Double_t fpparams[npar3] = {50, 500, 500};
         f_p->SetParameters(fpparams);
         hPionsFit->Fit("f_p", "QR");
@@ -503,7 +465,7 @@ void twod_gauss_energy()
         /////      ///  ///////
         ///////////////////////
         ///////////////////////
-        //hFin->Add(hPionsFit, -1.);
+        //hFin->Add(hPionsFit, -1.); //uncomment this line if you want to try pion subtraction
         //fit w/o pions
         for (int iBin = 1; iBin <= hFin->GetNbinsX() * hFin->GetNbinsY(); iBin++)
         {
@@ -514,9 +476,6 @@ void twod_gauss_energy()
                 hFin->SetBinError(iBin, numeric_limits<double>::max());
         }
         f8->SetParameters(f7params);
-        /*f8->SetParLimits(0, 0, 100);
-        f8->SetParLimits(1, 0, 100);
-        f8->SetParLimits(2, 0, 5000);*/
 
         hFin->Fit("f8", "QR M");
         double par2_max, edep_max;
@@ -527,30 +486,12 @@ void twod_gauss_energy()
         if (entry == 49999)
             cout << par2_max / 1000 << "  " << edep_max << endl;
 
-        /*hFin2->Reset();
-        for (int i = 1; i < hFin2->GetXaxis()->GetNbins() + 1; i++)
-        {
-            for (int j = 1; j < hFin2->GetYaxis()->GetNbins() + 1; j++)
-            {
-                if (i == 4 && j == 4)
-                    continue;
-                double x = hFin2->GetXaxis()->GetBinCenter(i);
-                double y = hFin2->GetYaxis()->GetBinCenter(j);
-                double z = f8->Eval(x, y);
-                if (z < 0) // ??? due to conic equation
-                    z = 0;
-                //Ecalc += z;
-                hFin2->Fill(x, y, z);
-            }
-        }*/
-
-        double radius_con = f8->GetParameter(2) * f8->GetParameter(0) / f8->GetParameter(1);
-        double Ecalc = (3.1415 * radius_con * radius_con * f8->GetParameter(2)) / 675; //из геометрии V=1/3pi*h*r^2
+        double radius_con = f8->GetParameter(2) * f8->GetParameter(0) / f8->GetParameter(1); //use this one if you work with subtraction
+        //double radius_con = f6->GetParameter(2) * f6->GetParameter(0) / f6->GetParameter(1); //use this one if you don't and replace all the following f8 with f6,in principle, you can work with f8 even if you didn't uncomment pion subtraction (line 468)
+        double Ecalc = (3.1415 * radius_con * radius_con * f8->GetParameter(2)) / 675; //from geometry V=1/3pi*h*r^2
         double radius_con_p = f_p->GetParameter(2) * f_p->GetParameter(0) / f_p->GetParameter(1);
         double E_p = (3.1415 * radius_con_p * radius_con_p * f_p->GetParameter(2)) / 675;
-        //double radius_con = f6->GetParameter(2) * f6->GetParameter(0) / f6->GetParameter(1);
-        //myfile << "rad " << radius_con << " par 3 " << f8->GetParameter(2) << " par 0 " << f8->GetParameter(0) << " par 2 " << f8->GetParameter(2) << endl;
-        //myfile << atan(f8->GetParameter(2) / f8->GetParameter(0)) * 180 / 3.1415 << " " << f8->GetParameter(2) << endl;
+
         g->SetMarkerColor(1);
         g1->SetMarkerColor(1);
         g2->SetMarkerColor(1);
@@ -573,10 +514,10 @@ void twod_gauss_energy()
         {
             //g3->SetPoint(g3->GetN(), f8->GetParameter(2) / 1000, edep_7sect_1 + edep_7sect_2); // emax vs edep ORIGINAL
             g3->SetPoint(g3->GetN(), f8->GetParameter(2) / 1000, edep_7sect_1 + edep_7sect_2); // emax vs edep
-            //hEdepEmax->Fill(f8->GetParameter(2) / 1000, edep_7sect_1 + edep_7sect_2);          //free scale
-            //myfile << f8->GetParameter(2) / 1000 << " " << edep_7sect_1 + edep_7sect_2 << " " << impPar << endl;
-            hEdepEmax->Fill(f8->GetParameter(2) / 1000 / 2.2832, (edep_7sect_1 + edep_7sect_2) / 18.5943); //scale 1:1
-            myfile << f8->GetParameter(2) / 1000 / 2.2832 << " " << (edep_7sect_1 + edep_7sect_2) / 18.5943 << " " << impPar << endl;
+            hEdepEmax->Fill(f8->GetParameter(2) / 1000, edep_7sect_1 + edep_7sect_2);          //free scale
+            myfile << f8->GetParameter(2) / 1000 << " " << edep_7sect_1 + edep_7sect_2 << " " << impPar << endl;
+            //hEdepEmax->Fill(f8->GetParameter(2) / 1000 / 2.2832, (edep_7sect_1 + edep_7sect_2) / 18.5943); //scale 1:1 //if you want to use it you should run this macro twice and out here the numbers which generated in lines 481-487, be careful with the entry numbers , you should use entry = total_entry-1
+            //myfile << f8->GetParameter(2) / 1000 / 2.2832 << " " << (edep_7sect_1 + edep_7sect_2) / 18.5943 << " " << impPar << endl;
         }
         if (radius_con > 0 && Ecalc > 0 && Ecalc < 30000 && f8->GetParameter(2) > 0 && f8->GetParameter(2) < 30000)
         {
@@ -594,18 +535,6 @@ void twod_gauss_energy()
         }
 
         hPions->Fill(impPar, hPionsFit->Integral() / 1000); //imp vs E_pions
-        //cout << impPar << " " << hPionsFit->Integral() << endl;
-
-        //double Ecalc1 = (3.1415 * radius_con * radius_con * f6->GetParameter(2)) / 675; //из геометрии V=1/3pi*h*r^2
-        // double Ecalc2 = (3.1415 * radius_con_p * radius_con_p * f_p->GetParameter(2)) / 675;                                         //из геометрии V=1/3pi*h*r^2
-        //double Ecalc2 = (3.1415 * radius_con_p * radius_con_p * fabs(f_p->GetParameter(2))) / 675;											  //из геометрии V=1/3pi*h*r^2
-        //double Ecalc = Ecalc1 - Ecalc2;
-        //myfile << entry << " geo " << Ecalc << endl;
-
-        //TCanvas *c1 = new TCanvas("Surface fitted pions", "Surface fitted pions");
-        //hPionsFit->Draw();
-        //c1->Print("h1.png(", "png");
-        //c1->SaveAs(Form("%e.png", entry));
 
         double Edep = edep_7sect_1 + edep_7sect_2;
         if (radius_con > 0)
@@ -613,10 +542,6 @@ void twod_gauss_energy()
             //myfile << Ecalc / 1000 << " " << Edep << " " << impPar << endl;
             EdepEcalc->Fill(Ecalc / 1000, Edep);
         }
-        //myfile << entry << " " << Ecalc << " " << radius_con << " " << pion_energy << " " << f8->GetParameter(2) << "  " << f8->GetParameter(0) << " " << f8->GetParameter(2) << " " << hPionsFit->Integral() << endl;
-        //EdepEcalc->Fill(Ecalc / 1000, Edep_2);
-
-        ///////////////////// paste out
     }
     cout << endl;
 
@@ -645,18 +570,7 @@ void twod_gauss_energy()
     hEnergy->GetYaxis()->SetTitleSize(0.05);
     hEnergy->Draw("lego2z");
 
-    //f2->Draw("surf same bb");
     auto legend = new TLegend(0.1, 0.7, 0.48, 0.9);
-    /*TCanvas *canv_surface_diff = new TCanvas("Surface diff", "Surface diff");
-    gStyle->SetOptFit(1111);
-
-    hDiff->Draw("lego2z");
-    legend->AddEntry((TObject *)0, TString::Format("Chi = %g", f6->GetChisquare()), "");
-    cout << " Chi = " << f6->GetChisquare() << endl;*/
-
-    /* TCanvas *canv_surface_fitted_fill = new TCanvas("Surface fit fill", "Surface fitted fill");
-    hFin2->SetTitle("hFin2");
-    hFin2->Draw("lego2z");*/
 
     TCanvas *canv_surface_fin = new TCanvas("fin", "fin");
     hFin->SetTitle("final");
