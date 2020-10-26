@@ -2,6 +2,8 @@
 
 This files implemented to determine centrality at MPD/NICA experiment with FHCal.
 
+**The preliminary version of the code, requires more automatization, however, is currently working.**
+
 ## Files description
 
 **twod_gauss_energy_uni_distr.cpp** --- file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
@@ -12,7 +14,7 @@ This files implemented to determine centrality at MPD/NICA experiment with FHCal
 
 **Ellipse.cpp**. FitIt uses this file to fit with the ellipse.
 
-**EdepEmax_ell_QGSM_high_bin_2_percent.cpp** is a macro for splitting the histograms into central classes.
+**Impact.cpp** is a macro for splitting the histograms into central classes.
 
 ## How to
 
@@ -61,5 +63,21 @@ To run:
 
         ./RunFits.sh
 
-**4.  **
+**4. Impact.cpp**
+
+Final stage. Not very user-friendly and requires manual actions. Once you have finished fitting and selected the right fit, you have the parameters of a curve that envelope the histogram data. The output looks like this:
+
+        EXT PARAMETER                                   STEP         FIRST   
+        NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+        1  x0           5.00000e-04   2.51883e-04   3.74524e-05** at limit **
+        2  y0           2.37348e-01   3.36057e-03  -4.11668e-06  -6.81629e-02
+        3  a            7.54648e-01   6.39113e-03  -1.85627e-06   1.10214e-02
+        4  b            1.75969e-01   2.27828e-03  -4.68362e-06   5.60232e-02
+        5  theta        3.80269e+01   2.85929e-01   5.07917e-06  -1.90082e-02
+        top x 0.594961
+        top y 0.702224
+        theta deg 0.663675
+        
+This way you have all the data to go on dividing the histogram into sectors. However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated).
+
 
