@@ -79,7 +79,10 @@ Final stage. Not very user-friendly and requires manual actions. Once you have f
         theta deg 0.663675
         
 This way you have all the data to go on dividing the histogram into sectors. However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated). In case your fit is obtained at zero iteration of FitIt.cpp you should do the following:
-Set paths:
+
+Set paths and name of your .txt with data from step 1:
+
+    myfile.open("data_check.txt");
 
     TFile *f_input = new TFile("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_full_1_to_1.root");
     TH2F *hist = (TH2F *)f_input->Get("EdepEmax");
