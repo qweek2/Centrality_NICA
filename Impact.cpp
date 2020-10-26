@@ -21,18 +21,13 @@ void ImpactIt()
     TGraph *g1 = new TGraph(); // using the blank constructor
     TGraph *g2 = new TGraph(); // using the blank constructor
                                // 1, 2 st
-    //TFile *f_input = new TFile("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_minus.root");
     TFile *f_input = new TFile("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_full_1_to_1.root");
-    //TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_minus.root");
-    //TH2F *hist = (TH2F *)f_input->Get("pEcalcEdep_nt");
     TH2F *hist = (TH2F *)f_input->Get("EdepEmax");
     //hist->RebinX(2);
     //hist->RebinY(2);
     int Bin_Y = hist->GetYaxis()->GetNbins();
     int Bin_X = hist->GetXaxis()->GetNbins();
     cout << Bin_X << "  " << Bin_Y << endl;
-    //TCutG* graph_cut = new TCutG("mycut", 4);
-    //TCanvas *canvas = new TCanvas("c_Et_El_a", "c_Et_El_a", 600, 450);
 
     TH2F *pElEt[24];
     for (int i_pelet = 0; i_pelet < 25; i_pelet++)
@@ -53,19 +48,6 @@ void ImpactIt()
     int i_cut;
 
     cout << hist->GetYaxis()->GetNbins() << " " << hist->GetXaxis()->GetNbins() << endl;
-    //подсчет кол-ва событий
-
-    /*for (int i = 0; i < hist->GetXaxis()->GetNbins(); ++i) // integral or i = 1 СДЕЛАЙ С 0 !!!!!!!!!!!!!!1
-    {
-        for (int j = 0; j < hist->GetYaxis()->GetNbins(); ++j)
-        {
-            count = hist->GetBinContent(i, j);
-            if (count > 0)
-            {
-                sum = sum + count;
-            }
-        }
-    }*/
     sum = hist->Integral();
     int arr_cuts[24];
     int n_cuts = 20;
@@ -79,11 +61,12 @@ void ImpactIt()
     double xs, ys, xf, yf, koef, xs_d, ys_d, xf_d, yf_d, koef_d, yorth, xorth, ycheck, xs_rot, ys_rot, xf_rot, yf_rot, xs_rot_d, ys_rot_d, xf_rot_d, yf_rot_d;
     double cut_point_d[24][5];
     double xorth_prev;
+    
     const double y0 = 0.17992;
+    const double x0 = 0.0005;
     const double a = 0.891876;
     const double b = 0.127786;
     const double th = 0.754254; //radians
-    const double x0 = 0.0005;
 
     bool BinDup[1000][1000];
     for (int initBD = 0; initBD < 1000; initBD++)
@@ -111,10 +94,6 @@ void ImpactIt()
     cout << "***************1**************" << endl;
     for (int i = -200000; i < 200000; i++) // along x
     {
-        // ===========================================
-        // под
-
-        //////////////////////////////////////////////
         xs_d = i * 0.00001; //считaем точки на эллипсе 1
         ys_d = y0 - (b * sqrt(a * a - xs_d * xs_d + 2 * xs_d * x0 - x0 * x0)) / a;
 
@@ -128,10 +107,7 @@ void ImpactIt()
         yf_rot_d = y0 + (xf_d - x0) * sin(th) + (yf_d - y0) * cos(th);
         koef_d = (yf_rot_d - ys_rot_d) / (xf_rot_d - xs_rot_d); // коэф наклона прямой через 2 точки на эллипсе под
         g1->SetMarkerColor(1);
-        //g1->SetPoint(g1->GetN(), xs_rot_d, ys_rot_d);
-        //g1->SetPoint(g1->GetN(), xs_rot_d, 0.939572 * xs_rot_d + 0.17945);
 
-        //под осью
         for (int l = 0; l < 1000; l++) //идем по перпендикуляру
         {
             xorth = l * 0.001;
@@ -230,8 +206,6 @@ void ImpactIt()
 
         koef = (yf_rot - ys_rot) / (xf_rot - xs_rot); // коэф наклона прямой через 2 точки на эллипсе над
 
-        //полуось y=0,065x+0.253
-        //над большой полуосью
         for (int l = 0; l < 1000; l++) //идем по перпендикуляру l = 8000
         {
             xorth = l * 0.001;
@@ -306,7 +280,6 @@ void ImpactIt()
         cout << " CUTS " << i_cut << " | " << cut_point_d[i_cut][1] << " " << cut_point_d[i_cut][2]
              << " " << cut_point_d[i_cut][3] << " " << cut_point_d[i_cut][4] << endl;
     }
-    //sleep(5000);
 
     /////////////////////////////////////
     ////    ////////                 ////
@@ -317,21 +290,6 @@ void ImpactIt()
     /////////////////////////////////////
 
     TCutG *graph_cut = new TCutG("mycut", 5);
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     gStyle->SetStatW(0.3);
     gStyle->SetStatH(0.2);
     gStyle->SetOptStat(0000);
@@ -382,8 +340,6 @@ void ImpactIt()
             }
         } //for (int iii = 0; iii < 13; iii++)
     }     //while
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     TF1 *fit1 = new TF1("fit1", "gaus");
     myfile << "Mean Sigma " << endl;
@@ -445,13 +401,4 @@ void ImpactIt()
     }
 
     myfile.close();
-
-    //g1->Draw("P");
-    //g2->Draw("P");
-    /*TMultiGraph *mg = new TMultiGraph();
-	mg->Add(g1,"P");
-	mg->Add(g2,"P");
-	mg->Draw("P");
-*/
-    //canvas->SaveAs("test.png");
 }
