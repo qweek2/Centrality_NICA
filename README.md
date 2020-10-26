@@ -6,15 +6,15 @@ This files implemented to determine centrality at MPD/NICA experiment with FHCal
 
 ## Files description
 
-**twod_gauss_energy_uni_distr.cpp** --- file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
+**twod_gauss_energy_uni_distr.cpp**. Creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
 
 **FitIt.cpp** is for fitting histograms in order to divide it into sectors (10%, 5% etc.)
 
 **RunFits.sh** is needed if the defaults do not result in a fitting with the 1st time.
 
-**Ellipse.cpp**. FitIt uses this file to fit with the ellipse.
+**Ellipse.cpp**. FitIt uses this file to fit with an ellipse.
 
-**Impact.cpp** is a macro for splitting the histograms into central classes.
+**Impact.cpp** is a macro for splitting the histograms into centrality classes.
 
 ## How to
 
@@ -90,7 +90,6 @@ Set paths and name of your .txt with data from step 1:
     TH2F *hist = (TH2F *)f_input->Get("EdepEmax");
     
     ifstream fp2("QGSM_11_Edep_Emax.txt");
-
     
 Set parameters of the curve in lines 64 - 68. Example:
     
@@ -107,6 +106,9 @@ Set the range in for cycles:
     for (int i = -200000; i < 200000; i++) // along x
     
 and further.
+
+The last thing to do before starting is to determine at what point the transition from the edge of the lower branch to the edge of the upper branch occurs (see the picture illustrating this transition).
+
 
 
 
