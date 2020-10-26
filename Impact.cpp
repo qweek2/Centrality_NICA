@@ -61,7 +61,7 @@ void ImpactIt()
     double xs, ys, xf, yf, koef, xs_d, ys_d, xf_d, yf_d, koef_d, yorth, xorth, ycheck, xs_rot, ys_rot, xf_rot, yf_rot, xs_rot_d, ys_rot_d, xf_rot_d, yf_rot_d;
     double cut_point_d[24][5];
     double xorth_prev;
-    
+
     const double y0 = 0.17992;
     const double x0 = 0.0005;
     const double a = 0.891876;
@@ -94,28 +94,26 @@ void ImpactIt()
     cout << "***************1**************" << endl;
     for (int i = -200000; i < 200000; i++) // along x
     {
-        xs_d = i * 0.00001; //считaем точки на эллипсе 1
+        xs_d = i * 0.00001;
         ys_d = y0 - (b * sqrt(a * a - xs_d * xs_d + 2 * xs_d * x0 - x0 * x0)) / a;
 
-        xf_d = xs_d + 0.000001; //считaем точки на эллипсе 2 (смещение)
+        xf_d = xs_d + 0.000001; //shift
         yf_d = y0 - (b * sqrt(a * a - xf_d * xf_d + 2 * xf_d * x0 - x0 * x0)) / a;
 
         // под
-        xs_rot_d = x0 + (xs_d - x0) * cos(th) - (ys_d - y0) * sin(th); // получили новые коорд в повернутой СК
+        xs_rot_d = x0 + (xs_d - x0) * cos(th) - (ys_d - y0) * sin(th); // get new coord in the rotated coord.system
         ys_rot_d = y0 + (xs_d - x0) * sin(th) + (ys_d - y0) * cos(th);
-        xf_rot_d = x0 + (xf_d - x0) * cos(th) - (yf_d - y0) * sin(th); // получили новые коорд в повернутой СК (смещенные)
+        xf_rot_d = x0 + (xf_d - x0) * cos(th) - (yf_d - y0) * sin(th); // get new coord in the rotated coord.system (with shift)
         yf_rot_d = y0 + (xf_d - x0) * sin(th) + (yf_d - y0) * cos(th);
-        koef_d = (yf_rot_d - ys_rot_d) / (xf_rot_d - xs_rot_d); // коэф наклона прямой через 2 точки на эллипсе под
+        koef_d = (yf_rot_d - ys_rot_d) / (xf_rot_d - xs_rot_d);
         g1->SetMarkerColor(1);
 
-        for (int l = 0; l < 1000; l++) //идем по перпендикуляру
+        for (int l = 0; l < 1000; l++) //perpendicular to the envelope
         {
             xorth = l * 0.001;
-            yorth = ys_rot_d - (1 / koef_d) * (xorth - xs_rot_d); //получили ур-е перпендикуляра
-            //cout << i << " | points | " << points_k << endl;
+            yorth = ys_rot_d - (1 / koef_d) * (xorth - xs_rot_d); //perpendicular equation
             if (points_k > arr_cuts[init_cuts_array] && ((yorth - (0.939572 * xorth + 0.17945)) < 0))
             {
-
                 init_cuts_array = init_cuts_array + 1;
                 cut_point_d[i_cut][1] = (ys_rot_d + xs_rot_d / koef_d - 0.17945) / (0.939572 + 1 / koef_d); //? +-
                 cut_point_d[i_cut][2] = 0.939572 * cut_point_d[i_cut][1] + 0.17945;
@@ -154,8 +152,8 @@ void ImpactIt()
         }
     }
 
-    cut_point_d[i_cut][1] = 1; // x
-    cut_point_d[i_cut][2] = 0.939572 * 1 + 0.17945;
+    cut_point_d[i_cut][1] = 1;                      // x
+    cut_point_d[i_cut][2] = 0.939572 * 1 + 0.17945; //y
     cut_point_d[i_cut][3] = 1;
     cut_point_d[i_cut][4] = 0;
     myfile << cut_point_d[i_cut][1] << " " << cut_point_d[i_cut][2] << " " << cut_point_d[i_cut][3] << " " << cut_point_d[i_cut][4] << endl;
@@ -164,7 +162,7 @@ void ImpactIt()
          << " " << cut_point_d[i_cut][3] << " " << cut_point_d[i_cut][4] << " | points_k | " << points_k << endl;
 
     cut_point_d[i_cut][1] = 0; // x
-    cut_point_d[i_cut][2] = 1;
+    cut_point_d[i_cut][2] = 1; //y
     cut_point_d[i_cut][3] = 0;
     cut_point_d[i_cut][4] = 0.2;
     myfile << cut_point_d[i_cut][1] << " " << cut_point_d[i_cut][2] << " " << cut_point_d[i_cut][3] << " " << cut_point_d[i_cut][4] << endl;
@@ -190,28 +188,23 @@ void ImpactIt()
         // ===========================================
         //над осью
         //cout << i << "\r";
-        xs = i * 0.00001; //считaем точки на эллипсе 1 над осью
+        xs = i * 0.00001; 
         ys = (b * sqrt(a * a - xs * xs + 2 * xs * x0 - x0 * x0)) / a + y0;
 
-        xf = xs + 0.000001; //считaем точки на эллипсе 2 (смещение) над осью
+        xf = xs + 0.000001; 
         yf = (b * sqrt(a * a - xf * xf + 2 * xf * x0 - x0 * x0)) / a + y0;
 
         //над
-        xs_rot = x0 + (xs - x0) * cos(th) - (ys - y0) * sin(th); // получили новые коорд в повернутой СК
+        xs_rot = x0 + (xs - x0) * cos(th) - (ys - y0) * sin(th); 
         ys_rot = y0 + (xs - x0) * sin(th) + (ys - y0) * cos(th);
-        xf_rot = x0 + (xf - x0) * cos(th) - (yf - y0) * sin(th); // получили новые коорд в повернутой СК (смещенные)
+        xf_rot = x0 + (xf - x0) * cos(th) - (yf - y0) * sin(th); 
         yf_rot = y0 + (xf - x0) * sin(th) + (yf - y0) * cos(th);
-        g1->SetMarkerColor(1);
-        //g1->SetPoint(g1->GetN(), xs_rot, ys_rot);
+        koef = (yf_rot - ys_rot) / (xf_rot - xs_rot);
 
-        koef = (yf_rot - ys_rot) / (xf_rot - xs_rot); // коэф наклона прямой через 2 точки на эллипсе над
-
-        for (int l = 0; l < 1000; l++) //идем по перпендикуляру l = 8000
+        for (int l = 0; l < 1000; l++) 
         {
             xorth = l * 0.001;
             yorth = ys_rot - (1 / koef) * (xorth - xs_rot);
-            //if (l % 5 == 0 && (yorth - (0.939572 * xorth + 0.17945)) > 0)
-            //g1->SetPoint(g1->GetN(), xorth, yorth);
 
             if (points_k > arr_cuts[init_cuts_array] && ((yorth - (0.939572 * xorth + 0.17945)) > 0))
             {
@@ -244,7 +237,7 @@ void ImpactIt()
                     DupFlag = true;
                 }
 
-                if (DupFlag && count > 0 /* && (koef * (ys_rot - 30) + xs_rot) > 0*/)
+                if (DupFlag && count > 0
                 {
                     points_k = points_k + count;
                 }
@@ -255,7 +248,7 @@ void ImpactIt()
     cut_point_d[i_cut][1] = 1; // x
     cut_point_d[i_cut][2] = 1; // y
     cut_point_d[i_cut][3] = 1;
-    cut_point_d[i_cut][4] = 0.939572 * 1 + 0.17945; // y=0,065x+0.253;
+    cut_point_d[i_cut][4] = 0.939572 * 1 + 0.17945;
     myfile << cut_point_d[i_cut][1] << " " << cut_point_d[i_cut][2] << " " << cut_point_d[i_cut][3] << " " << cut_point_d[i_cut][4] << endl;
 
     cout << " CUTS | " << cut_point_d[i_cut][1] << " " << cut_point_d[i_cut][2]
@@ -316,7 +309,7 @@ void ImpactIt()
         bool IsPointInside = false;
         hImpPar->Fill(impPar);
         for (int iii = 0; iii < 23; iii++)
-        { //проверяем, к какому сектору относится точка
+        {
             if (iii == 14)
                 continue;
             graph_cut->SetPoint(0, cut_point_d[iii][1], cut_point_d[iii][2]);
