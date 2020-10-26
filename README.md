@@ -38,5 +38,6 @@ You'll need the .txt file for the next step, its name can be changed here:
 
             myfile.open("file_name.txt");
 
+2. 
 
  
