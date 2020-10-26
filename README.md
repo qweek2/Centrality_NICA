@@ -1,5 +1,7 @@
 # Centrality_NICA
 
+This files implemented to determine centrality at MPD/NICA experiment with FHCal.
+
 ## Files description
 
 **twod_gauss_energy_uni_distr.cpp** --- file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
@@ -14,35 +16,27 @@
 
 ## How to
 
-1. Set path to your data file here:
+1. **twod_gauss_energy_uni_distr.cpp**
 
-	TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/yourfile.root");
+Set path to your data file here:
+
+        TFile *_file0 = TFile::Open("/path/datafile.root");
+        
+Uncomment this line if you want to try pion subtraction:
+
+        //hFin->Add(hPionsFit, -1.);
+        
+You can draw a lot of histograms, some of them will be already available after the first run, you can see the list in the "draw" part of the code. For futher steps we will use Edep_Emax histo as an example.
+
+        if (radius_con > 0) //here you can set any cut you need
+        {
+            hEdepEmax->Fill(f8->GetParameter(2) / 1000, edep_7sect_1 + edep_7sect_2); //f8->GetParameter(2) is a cone height
+            myfile << f8->GetParameter(2) / 1000 << " " << edep_7sect_1 + edep_7sect_2 << " " << impPar << endl; //write data to the .txt
+        }
+        
+You'll need the .txt file for the next step, its name can be changed here:
+
+            myfile.open("file_name.txt");
 
 
-1. FitIt is for Fitting. Set path to the hist you want to fit with ellipse.
-
-Example:
-	
-	TFile* f_input = new TFile("path/file_name.root");
-        TH2F* hist = (TH2F*)f_input->Get("hist_name");
-To use: 
-
-        .L FitData.cpp
-        FitIt()
-
-in case the program does not work correctly cut off the noise using the i and j parameters in the loop for (line 61, 63).
-
-
-
-	
-2. Impact.cpp is for colorizing hists, dividing it by events %. Impact factors visualising.
-
-Set path to file and histo:
-
-	TFile *f_input = new TFile("path/file_name.root");
-	TH2F *hist = (TH2F *)f_input->Get("hist_name");
-To use:
-
-        .L impact.cpp
-        ImpactIt()
  
