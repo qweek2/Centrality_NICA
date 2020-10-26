@@ -13,11 +13,17 @@
 **EdepEmax_ell_QGSM_high_bin_2_percent.cpp** is a macro for splitting the histograms into central classes.
 
 ## How to
+
+1. Set path to your data file here:
+
+	TFile *_file0 = TFile::Open("/mnt/d/Work/root/builddir/macros/yourfile.root");
+
+
 1. FitIt is for Fitting. Set path to the hist you want to fit with ellipse.
 
 Example:
-        
-        TFile* f_input = new TFile("path/file_name.root");
+	
+	TFile* f_input = new TFile("path/file_name.root");
         TH2F* hist = (TH2F*)f_input->Get("hist_name");
 To use: 
 
