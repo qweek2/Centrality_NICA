@@ -108,7 +108,7 @@ Set the range in for cycles:
 and further.
 
 The last thing to do before starting is to determine at what point the transition from the edge of the lower branch to the edge of the upper branch occurs (see the picture illustrating this transition).
-
+<img src="https://raw.githubusercontent.com/qweek2/Centrality_NICA/master/pics_for_readme/cuts.png" width="400">
 
 
 
