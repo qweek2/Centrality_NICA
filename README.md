@@ -40,7 +40,7 @@ You'll need the .txt file for the next step, its name can be changed here:
             
 2. **Ellipse.cpp**
 
-Now you have a histogram, you need to roughly determine the center of the ellipse and the size of the axes. You need to paste these estimates into the FitIt.cpp file to make the fit more accurate.
+Now you have a histogram, you need to roughly determine the center of the ellipse and the size of the axes. You need to paste these estimates into the FitIt.cpp file to make the fit more accurate. Put this values (x0, y0, a, b) into the lines 131-134. 
 
 3. **RunFits.sh**
 
