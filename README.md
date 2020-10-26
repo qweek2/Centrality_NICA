@@ -16,7 +16,7 @@ This files implemented to determine centrality at MPD/NICA experiment with FHCal
 
 ## How to
 
-1. **twod_gauss_energy_uni_distr.cpp**
+**1. twod_gauss_energy_uni_distr.cpp**
 
 Set path to your data file here:
 
@@ -38,11 +38,19 @@ You'll need the .txt file for the next step, its name can be changed here:
 
             myfile.open("file_name.txt");
             
-2. **Ellipse.cpp**
+**2. Ellipse.cpp**
 
 Now you have a histogram, you need to roughly determine the center of the ellipse and the size of the axes. You need to paste these estimates into the FitIt.cpp file to make the fit more accurate. Put this values (x0, y0, a, b) into the lines 131-134. 
 
-3. **RunFits.sh**
+Specify the path to the folder (or create it) where the pictures with the fit results will be saved:
 
-Here just set number of FitIt.cpp iterations. The difference between iterations lies in the fact that probably at a single iteration fit may not work, so each run 1 bin in the x and y axis (from the left bottom) will be cutted.
+    gSystem->cd("/mnt/d/Work/INR/centrality/pics");
+    gSystem->Exec("mkdir fits_ell");
+    gSystem->cd("/mnt/d/Work/INR/centrality/pics/fits_ell");
+
+**3. RunFits.sh**
+
+Here just set number of FitIt.cpp iterations. The difference between iterations lies in the fact that probably at a single iteration fit may not work, so each run 1 bin in the x and y axis (from the left bottom) will be cutted. You can monitor the quality of the fit "online" by watching the output of Minuit in the terminal, or just look at the pictures and select the fit after finishing.
+
+**4.  **
 
