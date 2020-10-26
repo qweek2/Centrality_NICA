@@ -2,7 +2,7 @@
 
 ## Files description
 
-**twod_gauss_energy_uni_distr.cpp** -- file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
+**twod_gauss_energy_uni_distr.cpp** - file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
 
 **FitIt.cpp** is for fitting histograms in order to divide it into sectors (10%, 5% etc.)
 
