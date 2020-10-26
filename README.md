@@ -2,6 +2,8 @@
 
 This files implemented to determine centrality at MPD/NICA experiment with FHCal.
 
+**The preliminary version of the code, requires more automatization, however, is currently working.**
+
 ## Files description
 
 **twod_gauss_energy_uni_distr.cpp** --- file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
@@ -12,7 +14,7 @@ This files implemented to determine centrality at MPD/NICA experiment with FHCal
 
 **Ellipse.cpp**. FitIt uses this file to fit with the ellipse.
 
-**EdepEmax_ell_QGSM_high_bin_2_percent.cpp** is a macro for splitting the histograms into central classes.
+**Impact.cpp** is a macro for splitting the histograms into central classes.
 
 ## How to
 
@@ -61,5 +63,45 @@ To run:
 
         ./RunFits.sh
 
-**4.  **
+**4. Impact.cpp**
+
+Final stage. Not very user-friendly and requires manual actions. Once you have finished fitting and selected the right fit, you have the parameters of a curve that envelope the histogram data. The output looks like this:
+
+        EXT PARAMETER                                   STEP         FIRST   
+        NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+        1  x0           5.00000e-04   2.51883e-04   3.74524e-05** at limit **
+        2  y0           2.37348e-01   3.36057e-03  -4.11668e-06  -6.81629e-02
+        3  a            7.54648e-01   6.39113e-03  -1.85627e-06   1.10214e-02
+        4  b            1.75969e-01   2.27828e-03  -4.68362e-06   5.60232e-02
+        5  theta        3.80269e+01   2.85929e-01   5.07917e-06  -1.90082e-02
+        top x 0.594961
+        top y 0.702224
+        theta deg 0.663675
+        
+This way you have all the data to go on dividing the histogram into sectors. However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated). In case your fit is obtained at zero iteration of FitIt.cpp you should do the following:
+
+Set paths and name of your .txt with data from step 1:
+
+    myfile.open("data_check.txt");
+
+    TFile *f_input = new TFile("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_full_1_to_1.root");
+    TH2F *hist = (TH2F *)f_input->Get("EdepEmax");
+    
+Set parameters of the curve in lines 64 - 68. Example:
+    
+    const double y0 = 0.17992;
+    const double x0 = 0.0005;
+    const double a = 0.891876;
+    const double b = 0.127786;
+    const double th = 0.754254;
+    
+Then you have to determine k and b parameters from the y=kx+b equation. You should solve the system of 2 equations putting x0, y0 and top_x, top_y. Then replace all the k and b in program to your own (ctrl+H).
+
+Set the range in for cycles:
+   
+    for (int i = -200000; i < 200000; i++) // along x
+    
+and further.
+
+
 
