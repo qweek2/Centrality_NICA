@@ -77,15 +77,20 @@ Final stage. Not very user-friendly and requires manual actions. Once you have f
         top x 0.594961
         top y 0.702224
         theta deg 0.663675
-        
-This way you have all the data to go on dividing the histogram into sectors. However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated). In case your fit is obtained at zero iteration of FitIt.cpp you should do the following:
+
+Example of the fit picture:
+
+<img src="https://raw.githubusercontent.com/qweek2/Centrality_NICA/master/pics_for_readme/7_run%20Ellipse%20Fit%20.png" width="400">
+
+This way you have all the data to go on dividing the histogram into sectors (in this code 5% sectors). However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated). In case your fit is obtained at zero iteration of FitIt.cpp you should do the following:
 
 Set paths and name of your .txt with data from step 1:
 
-    myfile.open("data_check.txt");
-
     TFile *f_input = new TFile("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_full_1_to_1.root");
     TH2F *hist = (TH2F *)f_input->Get("EdepEmax");
+    
+    ifstream fp2("QGSM_11_Edep_Emax.txt");
+
     
 Set parameters of the curve in lines 64 - 68. Example:
     
