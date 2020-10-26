@@ -1,6 +1,6 @@
 # Centrality_NICA
 
-Files description.
+## Files description.
 
 twod_gauss_energy_uni_distr.cpp -- file for creating different histograms with dependencies (e.g. impact vs. angle, edep vs emax etc.).
 
