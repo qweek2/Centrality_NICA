@@ -47,15 +47,6 @@ Double_t ellipse_fcn(Double_t x, Double_t y,
   return v;
 }
 
-//
-// x[0] = "x"
-// x[1] = "y"
-// params[0] = ellipse's "x" center ("x0")
-// params[1] = ellipse's "y" center ("y0")
-// params[2] = ellipse's "semimajor" axis along "x" ("a" > 0)
-// params[3] = ellipse's "semiminor" axis along "y" ("b" > 0)
-// params[4] = ellipse's axes rotation angle ("theta" = -45 ... 135 degrees)
-//
 Double_t ellipse_fcn(const Double_t *x, const Double_t *params)
 {
   return ellipse_fcn(x[0], x[1],           // "x", "y"
@@ -339,3 +330,5 @@ void EllipseTGraphRMM(int run, TGraph *g = ((TGraph *)0))
 // .L EllipseTGraphRMM.cxx // or ".L EllipseTGraphRMM.cxx++"
 // EllipseTGraphRMM(TestGraphRMM());
 // for (Int_t i = 0; i < 10; i++) { EllipseTGraphRMM(); gSystem->Sleep(333);
+
+//https://root.cern.ch/doc/v606/fitEllipseTGraphRMM_8cxx_source.html
