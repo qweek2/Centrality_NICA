@@ -107,8 +107,71 @@ Set the range in for cycles:
     
 and further.
 
-The last thing to do before starting is to determine at what point the transition from the edge of the lower branch to the edge of the upper branch occurs (see the picture illustrating this transition).
-<img src="https://raw.githubusercontent.com/qweek2/Centrality_NICA/master/pics_for_readme/cuts.png" width="400">
+The last thing to do is to determine at what point the transition from the edge of the lower branch to the edge of the upper branch occurs (see the picture illustrating this transition).
 
+<img src="https://raw.githubusercontent.com/qweek2/Centrality_NICA/master/pics_for_readme/cuts.png" width="600">
 
+To determinate it run the program for 1 time, you will have such an output in the terminal (example):
 
+        CUTS 0 | 2.61855e-322 6.95331e-310 6.92198e-310 6.92199e-310
+        CUTS 1 | -2.35397 2.80689 0.00131725 0
+        CUTS 2 | -1.32037 3.69122 1.84388 0
+        CUTS 3 | 0.628014 5.35822 5.41378 0
+        CUTS 4 | 3.59403 7.89588 11.1476 0
+        CUTS 5 | 7.28269 11.0518 19.1294 0
+        CUTS 6 | 11.1003 14.3181 30.7557 0
+        CUTS 7 | 13.9407 16.7483 139.87 0
+        CUTS 8 | 30 30.4883 30 0
+        CUTS 9 | 0 30 0 4
+        CUTS 10 | -17.5241 30 1.21605 5.86133
+        CUTS 11 | -3.88682 30 7.77095 11.4696
+        CUTS 12 | 11.9038 30 12.6132 15.6125
+        CUTS 13 | 30 30 30 30.4883
+
+Hence, you should set the following parameters in the code:
+
+        for (int iii = 0; iii < 13; iii++)
+        {
+            if (iii == 8)
+                continue;
+                
+        <...>
+        
+        if (graph_cut->IsInside(emax, edep_read))
+            {
+                if (iii == 12)
+                {
+                    ImpPar[7]->Fill(impPar);
+                    pElEt[7]->Fill(emax, edep_read);
+                }
+                
+        <...>
+        
+        for (int i_impact = 0; i_impact < 13; i_impact++)
+        {
+                if (i_impact != 8)
+                
+        <...>
+        
+        for (int i_imp = 0; i_imp < 23; i_imp++)
+        {
+                if (i_imp == 8)
+            continue;
+            
+        <...>
+        
+        for (int i_pelet = 0; i_pelet < 23; i_pelet++)
+        {
+                if (i_pelet != 8)
+                
+        <...>        
+
+To run:
+        
+        root [0] .L Impact.cpp
+        root [1] ImpactIt()
+
+In the end you should have such pictures:
+
+<img src="https://raw.githubusercontent.com/qweek2/Centrality_NICA/master/pics_for_readme/res1.png" width="500">
+<img src="https://raw.githubusercontent.com/qweek2/Centrality_NICA/master/pics_for_readme/res2.png" width="500">
