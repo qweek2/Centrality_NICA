@@ -261,7 +261,7 @@ TGraph *TestGraphRMM(Bool_t randomize = kFALSE)
 //
 // "ROOT Script" entry point (the same name as the "filename's base")
 //
-void EllipseTGraphRMM(int run, TGraph *g = ((TGraph *)0))
+void Ellipse(int run, TGraph *g = ((TGraph *)0))
 {
   if (!g)
     g = TestGraphRMM(kTRUE); // create a "random" ellipse

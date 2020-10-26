@@ -10,7 +10,7 @@
 #include "Math/Functor.h"
 #include <cmath>
 #include <iostream>
-#include "EllipseTGraphRMMSMM.cpp"
+#include "Ellipse.cpp"
 using namespace std;
 
 //run RunsFit.sh
@@ -48,5 +48,4 @@ void FitIt(int run)
 
 	g->Draw("AP");
 	Ellipse(run,g);
-	
 }
