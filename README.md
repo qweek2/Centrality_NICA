@@ -78,6 +78,27 @@ Final stage. Not very user-friendly and requires manual actions. Once you have f
         top y 0.702224
         theta deg 0.663675
         
-This way you have all the data to go on dividing the histogram into sectors. However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated).
+This way you have all the data to go on dividing the histogram into sectors. However, there are still a couple of steps left, it is necessary to make changes (enter these parameters) in the program code (at this stage it is organized manually, in the future everything will be automated). In case your fit is obtained at zero iteration of FitIt.cpp you should do the following:
+Set paths:
+
+    TFile *f_input = new TFile("/mnt/d/Work/root/builddir/macros/EdepEmax_QGSM_full_1_to_1.root");
+    TH2F *hist = (TH2F *)f_input->Get("EdepEmax");
+    
+Set parameters of the curve in lines 64 - 68. Example:
+    
+    const double y0 = 0.17992;
+    const double x0 = 0.0005;
+    const double a = 0.891876;
+    const double b = 0.127786;
+    const double th = 0.754254;
+    
+Then you have to determine k and b parameters from the y=kx+b equation. You should solve the system of 2 equations putting x0, y0 and top_x, top_y. Then replace all the k and b in program to your own (ctrl+H).
+
+Set the range in for cycles:
+   
+    for (int i = -200000; i < 200000; i++) // along x
+    
+and further.
+
 
 
