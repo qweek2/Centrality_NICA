@@ -10,7 +10,7 @@ This files implemented to determine centrality at MPD/NICA experiment with FHCal
 
 **RunFits.sh** is needed if the defaults do not result in a fitting with the 1st time.
 
-**EllipseTGraphRMM.cpp**. FitIt uses this file to fit with the ellipse.
+**Ellipse.cpp**. FitIt uses this file to fit with the ellipse.
 
 **EdepEmax_ell_QGSM_high_bin_2_percent.cpp** is a macro for splitting the histograms into central classes.
 
@@ -37,7 +37,12 @@ You can draw a lot of histograms, some of them will be already available after t
 You'll need the .txt file for the next step, its name can be changed here:
 
             myfile.open("file_name.txt");
+            
+2. **Ellipse.cpp**
 
-2. 
+Now you have a histogram, you need to roughly determine the center of the ellipse and the size of the axes. You need to paste these estimates into the FitIt.cpp file to make the fit more accurate.
 
- 
+3. **RunFits.sh**
+
+Here just set number of FitIt.cpp iterations. The difference between iterations lies in the fact that probably at a single iteration fit may not work, so each run 1 bin in the x and y axis (from the left bottom) will be cutted.
+
