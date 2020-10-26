@@ -22,8 +22,6 @@
 #include <TF2.h>
 #include <vector>
 
-//git version 2
-
 Double_t g2(Double_t *x, Double_t *par)
 {
     Double_t r1 = Double_t((x[0] - par[1]) / par[2]);
@@ -36,23 +34,6 @@ Double_t fun2(Double_t *x, Double_t *par) //for signal
     Double_t z2 = x[0] * x[0] / par[0] / par[0] + x[1] * x[1] / par[0] / par[0];
     z2 *= par[1] * par[1];
     return -sqrt(z2) + par[2];
-}
-
-/*Double_t fun2(Double_t *x, Double_t *par) //for signal
-{
-	Double_t z2 = x[0] * x[0] / par[0] / par[0] + x[1] * x[1] / par[1] / par[1];
-	z2 *= par[2] * par[2];
-	return -sqrt(z2) + par[3];
-}*/
-
-// c/a=ctg(φ)
-Double_t fun3(Double_t *x, Double_t *par) //for pions
-{
-    //0.000142143 (result in radians) // 0.008144°
-    double phi = 0.000142143;
-    Double_t z2 = x[0] * x[0] / ((par[0] * tan(phi)) * (par[0] * tan(phi))) + x[1] * x[1] / ((par[0] * tan(phi)) * (par[0] * tan(phi)));
-    z2 *= par[0] * par[0];
-    return -sqrt(z2) + par[1];
 }
 
 //alternative
