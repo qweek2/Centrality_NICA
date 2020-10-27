@@ -2,6 +2,10 @@
 
 This files implemented to determine centrality at MPD/NICA experiment with FHCal.
 
+For a general introduction to the topic, see [this](https://indico.particle.mephi.ru/event/35/contributions/2329/) and [this](https://indico.cern.ch/event/839985/contributions/3983595/).
+
+Also useful links: [HADES](https://arxiv.org/pdf/1712.07993v2.pdf), [ALICE](https://arxiv.org/pdf/1301.4361.pdf).
+
 **The preliminary version of the code, requires more automatization, however, is currently working.**
 
 ## Files description
